@@ -1,0 +1,78 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
+
+module.exports = {
+    mode: 'development',
+    entry: {
+        index: './src/index.js',
+    },
+
+    devtool: 'cheap-module-source-map',
+    devServer: {
+        historyApiFallback: true,
+        // host: '0.0.0.0',
+        port: 3000,
+        contentBase: './build',
+        hot: true,
+        stats: {
+            colors: true,
+            hash: false,
+            version: false,
+            timings: false,
+            assets: false,
+            chunks: false,
+            modules: true,
+            reasons: false,
+            children: false,
+            source: false,
+            errors: true,
+            errorDetails: false,
+            warnings: true,
+            publicPath: false,
+        },
+    },
+
+    output: {
+        filename: './js/bundle.js',
+        path: path.resolve(__dirname, 'build'),
+        publicPath: '/',
+    },
+
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: ['file-loader'],
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: ['file-loader'],
+            },
+            {
+                test: /\.(csv|tsv)$/,
+                use: ['csv-loader'],
+            },
+            {
+                test: /\.xml$/,
+                use: ['xml-loader'],
+            },
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                },
+            },
+        ],
+    },
+
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './public/index.html',
+        }),
+    ],
+}
